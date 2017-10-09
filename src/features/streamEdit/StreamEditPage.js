@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import Rx from 'rxjs/Rx';
-import { VirtualTimeScheduler } from 'rxjs/scheduler/VirtualTimeScheduler';
-import { HotObservable } from 'rxjs/testing/HotObservable';
+import { Notification } from 'rxjs/Notification';
+import 'rxjs/add/operator/debounceTime';
+
+import SimulationScheduler from '../../utils/SimulationScheduler';
 
 class StreamEditPage extends Component {
   render() {
@@ -10,9 +11,9 @@ class StreamEditPage extends Component {
     Example implementation of an operator object
 
     const scheduler = new SimulationScheduler();
-    const hotInput = scheduler.hotObservable(inputMessages);
+    const hotInput = scheduler.createHotObservable(inputMessages);
     const observable = hotInput.debounceTime(100, scheduler);
-    const outputMessages = scheduler.simulate();
+    const outputMessages = scheduler.simulate(observable);
 
     Usage example of an operator object
 
@@ -20,28 +21,16 @@ class StreamEditPage extends Component {
 
     */
 
-    const scheduler = new VirtualTimeScheduler();
+    const scheduler = new SimulationScheduler();
     const messages = [
-      { frame: 40, notification: Rx.Notification.createNext(1) },
-      { frame: 60, notification: Rx.Notification.createNext(2) },
-      { frame: 80, notification: Rx.Notification.createNext(3) },
-      { frame: 500, notification: Rx.Notification.createComplete() },
+      { frame: 40, notification: Notification.createNext(1) },
+      { frame: 60, notification: Notification.createNext(2) },
+      { frame: 80, notification: Notification.createNext(3) },
+      { frame: 500, notification: Notification.createComplete() },
     ];
-    const hotObservable = new HotObservable(messages, scheduler);
-    const observable = hotObservable.debounceTime(100, scheduler);
-    const output = [];
-    scheduler.schedule(() => {
-      observable.subscribe((x) => {
-        output.push({ frame: scheduler.frame, notification: Rx.Notification.createNext(x) });
-      }, (err) => {
-        output.push({ frame: scheduler.frame, notification: Rx.Notification.createError(err) });
-      }, () => {
-        output.push({ frame: scheduler.frame, notification: Rx.Notification.createComplete() });
-      });
-    }, 0);
-
-    hotObservable.setup();
-    scheduler.flush();
+    const hotObservable = scheduler.createHotObservable(messages);
+    const input = hotObservable.debounceTime(100, scheduler);
+    const output = scheduler.simulate(input);
 
     console.log('output', output);
 
