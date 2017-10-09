@@ -15,14 +15,14 @@ class SimulationScheduler extends VirtualTimeScheduler {
   }
 
   simulate(observable) {
-    const output = [];
+    const outputMessages = [];
     this.schedule(() => {
       observable.subscribe((x) => {
-        output.push({ frame: this.frame, notification: Notification.createNext(x) });
+        outputMessages.push({ frame: this.frame, notification: Notification.createNext(x) });
       }, (err) => {
-        output.push({ frame: this.frame, notification: Notification.createError(err) });
+        outputMessages.push({ frame: this.frame, notification: Notification.createError(err) });
       }, () => {
-        output.push({ frame: this.frame, notification: Notification.createComplete() });
+        outputMessages.push({ frame: this.frame, notification: Notification.createComplete() });
       });
     }, 0);
     this.hotObservables.forEach((hotObservable) => {
@@ -30,7 +30,7 @@ class SimulationScheduler extends VirtualTimeScheduler {
     });
     this.hotObservables = [];
     super.flush();
-    return output;
+    return outputMessages;
   }
 }
 
