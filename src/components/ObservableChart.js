@@ -28,9 +28,11 @@ class ObservableChart extends Component {
 
     renderHorizontalLine(paddingTop);
     _.range(0, 6).forEach((i) => {
-      renderVerticalLine(i * 60, 0, height);
+      renderVerticalLine(i * 60, 0, height, 'grid__vertical-line', '#d9d9d9');
       renderText(`${i * 200} ms`, (i * 60) - 2, 10);
     });
+
+    renderVerticalLine(0, 0, height, 'grid__current-time', '#d0021b');
 
     function renderHorizontalLine(y) {
       select(node)
@@ -43,15 +45,15 @@ class ObservableChart extends Component {
         .attr('fill', '#d9d9d9');
     }
 
-    function renderVerticalLine(x, y, h) {
+    function renderVerticalLine(x, y, h, className, color) {
       select(node)
         .append('rect')
-        .attr('class', 'grid__vertical-line')
+        .attr('class', className)
         .attr('height', h)
         .attr('width', 1)
         .attr('x', x)
         .attr('y', y)
-        .attr('fill', '#d9d9d9');
+        .attr('fill', color);
     }
 
     function renderText(str, x, y) {
