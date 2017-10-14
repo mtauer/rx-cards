@@ -1,5 +1,15 @@
 body {
+  background-color: #f7f7f7;
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+}
+
+.content-wrapper {
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.operator-name {
+  text-align: center;
 }
