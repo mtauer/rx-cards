@@ -5,6 +5,8 @@ import 'rxjs/add/operator/debounceTime';
 import DebounceTimeOperator from '../../utils/DebounceTimeOperator';
 import ObservableChart from '../../components/ObservableChart';
 
+import './StreamEditPage.css';
+
 class StreamEditPage extends Component {
   render() {
     const inputMessages = [
@@ -20,9 +22,13 @@ class StreamEditPage extends Component {
     return (
       <div className="content-wrapper">
         <h1>StreamEditPage</h1>
-        <ObservableChart width="300" height="40" data={inputMessages} />
-        <p className="operator-name">DebounceTime 100</p>
-        <ObservableChart width="300" height="40" data={outputMessages} />
+        <div className="operators">
+          <div className="operator-container">
+            <ObservableChart width="300" height="40" data={inputMessages} label="Input Stream" />
+            <p className="operator-name">DebounceTime 100</p>
+            <ObservableChart width="300" height="40" data={outputMessages} label="Output Stream" />
+          </div>
+        </div>
       </div>
     );
   }

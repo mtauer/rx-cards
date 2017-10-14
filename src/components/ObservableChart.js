@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { select } from 'd3-selection';
 import _ from 'lodash';
 
+import './ObservableChart.css';
+
 class ObservableChart extends Component {
   componentDidMount() {
     this.createObservableChart();
@@ -101,9 +103,14 @@ class ObservableChart extends Component {
   }
 
   render() {
-    const { width, height } = this.props;
+    const { width, height, label } = this.props;
     return (
-      <svg ref={(node) => { this.node = node; }} width={width} height={height} />
+      <div className="observable-chart-container">
+        <h3 className="observable-chart__label">{label}</h3>
+        <div className="observable-chart">
+          <svg ref={(node) => { this.node = node; }} width={width} height={height} />
+        </div>
+      </div>
     );
   }
 }
@@ -112,9 +119,11 @@ const propTypes = {
   width: PropTypes.string.isRequired,
   height: PropTypes.string.isRequired,
   data: PropTypes.array.isRequired,
+  label: PropTypes.string,
   paddingTop: PropTypes.number,
 };
 const defaultProps = {
+  label: '',
   paddingTop: 14,
 };
 ObservableChart.propTypes = propTypes;

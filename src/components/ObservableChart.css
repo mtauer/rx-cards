@@ -1,0 +1,15 @@
+.observable-chart-container {
+  padding: 5px 15px;
+}
+
+.observable-chart__label {
+  color: #808080;
+  font-weight: 500;
+  font-size: 1.6rem;
+  margin: 0;
+  padding: 5px 0;
+}
+
+.observable-chart {
+  padding: 5px 0;
+}
