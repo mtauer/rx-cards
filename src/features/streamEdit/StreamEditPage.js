@@ -12,18 +12,17 @@ class StreamEditPage extends Component {
       { frame: 60, notification: Notification.createNext(2) },
       { frame: 80, notification: Notification.createNext(3) },
       { frame: 150, notification: Notification.createNext(4) },
+      { frame: 280, notification: Notification.createNext(4) },
       { frame: 500, notification: Notification.createComplete() },
     ];
     const outputMessages = new DebounceTimeOperator(100).simulate(inputMessages);
 
-    console.log('outputMessages', outputMessages);
-
     return (
       <div className="content-wrapper">
         <h1>StreamEditPage</h1>
-        <ObservableChart width="800" height="30" data={inputMessages} />
+        <ObservableChart width="300" height="30" data={inputMessages} />
         <p className="operator-name">DebounceTime 100</p>
-        <ObservableChart width="800" height="30" data={outputMessages} />
+        <ObservableChart width="300" height="30" data={outputMessages} />
       </div>
     );
   }

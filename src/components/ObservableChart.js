@@ -23,12 +23,12 @@ class ObservableChart extends Component {
       .attr('width', `${width}px`)
       .attr('x', '0px')
       .attr('y', '0px')
-      .attr('fill', '#f0f0f0');
+      .attr('fill', '#ffffff');
   }
 
   updateObservableChart() {
     const node = this.node;
-    const barWidth = 4;
+    const barWidth = 3;
 
     // create a rect for new messages
     select(node)
@@ -39,7 +39,8 @@ class ObservableChart extends Component {
       .attr('class', 'message')
       .attr('height', this.props.height)
       .attr('width', `${barWidth}px`)
-      .attr('y', '0px');
+      .attr('y', '0px')
+      .attr('fill', '#4a90e2');
 
     // remove rect for disappeared messages
     select(node)
