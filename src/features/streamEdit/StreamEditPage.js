@@ -20,9 +20,9 @@ class StreamEditPage extends Component {
     return (
       <div className="content-wrapper">
         <h1>StreamEditPage</h1>
-        <ObservableChart width="300" height="30" data={inputMessages} />
+        <ObservableChart width="300" height="40" data={inputMessages} />
         <p className="operator-name">DebounceTime 100</p>
-        <ObservableChart width="300" height="30" data={outputMessages} />
+        <ObservableChart width="300" height="40" data={outputMessages} />
       </div>
     );
   }
