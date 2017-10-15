@@ -32,7 +32,7 @@ class StreamChartMessages extends PureComponent {
 }
 
 const propTypes = {
-  height: PropTypes.string.isRequired,
+  height: PropTypes.number.isRequired,
   legendHeight: PropTypes.number.isRequired,
   messages: PropTypes.array.isRequired,
 };

@@ -17,7 +17,7 @@ class StreamChartTimeMarker extends PureComponent {
 }
 
 const propTypes = {
-  height: PropTypes.string.isRequired,
+  height: PropTypes.number.isRequired,
 };
 StreamChartTimeMarker.propTypes = propTypes;
 
