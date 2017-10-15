@@ -1,5 +1,7 @@
 import Rx from 'rxjs/Rx';
 import { Notification } from 'rxjs/Notification';
+import { createSelector } from 'reselect';
+import _ from 'lodash';
 
 // Initial state
 
@@ -57,17 +59,54 @@ const initialState = {
   },
 };
 
+// Action Types
+
+const PREFIX = 'streamEdit/';
+export const SET_STREAMS_MESSAGES_ACTION = `${PREFIX}SET_STREAMS_MESSAGES_ACTION`;
+
+// Action Creators
+
+export function setStreamsMessagesAction(streamsMessages) {
+  return { type: SET_STREAMS_MESSAGES_ACTION, streamsMessages };
+}
+
 // Reducer
 
-export default function streamEditReducer(state = initialState) {
-  return state;
+export default function streamEditReducer(state = initialState, action) {
+  switch (action.type) {
+    case SET_STREAMS_MESSAGES_ACTION:
+      return {
+        ...state,
+        streamsMessages: action.streamsMessages,
+      };
+    default:
+      return state;
+  }
 }
 
 // Epics
 
 export function createSimulateMessagesEpic() {
-  return () => {
-    console.log('simulate messages');
-    return Rx.Observable.never();
-  };
+  return (action$, store) =>
+    Rx.Observable.of(null)
+      .map(() => {
+        const streamsMessages = getStreamsMessages(store.getState());
+        return setStreamsMessagesAction(streamsMessages);
+      });
 }
+
+// Selectors
+
+const getDefinedStreamsMessages = state => state.streamEdit.definedStreamsMessages;
+const getOperatorsArray = state => _.values(state.streamEdit.operators);
+
+export const getStreamsMessages = createSelector(
+  [getDefinedStreamsMessages, getOperatorsArray],
+  (definedStreamsMessages, operatorsArray) => {
+    console.log('getStreamsMessages', definedStreamsMessages, operatorsArray);
+    const streamsMessages = {
+      ...definedStreamsMessages,
+    };
+    return streamsMessages;
+  },
+);
