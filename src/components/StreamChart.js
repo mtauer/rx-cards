@@ -7,17 +7,34 @@ import StreamChartTimeMarker from './StreamChartTimeMarker';
 
 import './StreamChart.css';
 
+const CHART_WIDTH = 300;
+const CHART_HEIGHT = 40;
+const CHART_LEGEND_HEIGHT = 14;
+
 class StreamChart extends PureComponent {
   render() {
-    const { width, height, label, messages } = this.props;
+    const { label, messages } = this.props;
     return (
       <div className="observable-chart-container">
         <h3 className="observable-chart__label">{label}</h3>
         <div className="observable-chart">
-          <svg width={width} height={height}>
-            <StreamChartGrid width={width} height={height} />
-            <StreamChartMessages width={width} height={height} messages={messages} />
-            <StreamChartTimeMarker width={width} height={height} />
+          <svg width={CHART_WIDTH} height={CHART_HEIGHT}>
+            <StreamChartGrid
+              width={CHART_WIDTH}
+              height={CHART_HEIGHT}
+              legendHeight={CHART_LEGEND_HEIGHT}
+            />
+            <StreamChartMessages
+              width={CHART_WIDTH}
+              height={CHART_HEIGHT}
+              legendHeight={CHART_LEGEND_HEIGHT}
+              messages={messages}
+            />
+            <StreamChartTimeMarker
+              width={CHART_WIDTH}
+              height={CHART_HEIGHT}
+              legendHeight={CHART_LEGEND_HEIGHT}
+            />
           </svg>
         </div>
       </div>
@@ -26,8 +43,6 @@ class StreamChart extends PureComponent {
 }
 
 const propTypes = {
-  width: PropTypes.string.isRequired,
-  height: PropTypes.string.isRequired,
   messages: PropTypes.array.isRequired,
   label: PropTypes.string,
 };

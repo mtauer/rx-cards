@@ -4,8 +4,7 @@ import _ from 'lodash';
 
 class StreamChartGrid extends PureComponent {
   render() {
-    const { width, height } = this.props;
-    const paddingTop = 14;
+    const { width, height, legendHeight } = this.props;
     return (
       <g>
         {renderBackground()}
@@ -17,9 +16,9 @@ class StreamChartGrid extends PureComponent {
       return (
         <rect
           width={width}
-          height={height - paddingTop}
+          height={height - legendHeight}
           x={0}
-          y={paddingTop}
+          y={legendHeight}
           fill="#ffffff"
         />
       );
@@ -54,8 +53,9 @@ class StreamChartGrid extends PureComponent {
 }
 
 const propTypes = {
-  width: PropTypes.string.isRequired,
-  height: PropTypes.string.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+  legendHeight: PropTypes.number.isRequired,
 };
 StreamChartGrid.propTypes = propTypes;
 
