@@ -1,13 +1,17 @@
+html {
+  font-size: 62.5%;
+}
+
 body {
-  background-color: #f7f7f7;
+  background-color: #ffffff;
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Helvetica Neue', georgia;
+  font-size: 1.6rem;
 }
 
 .content-wrapper {
-  margin: 0 auto;
-  max-width: 800px;
+  margin: 0 60px;
 }
 
 .operator-name {

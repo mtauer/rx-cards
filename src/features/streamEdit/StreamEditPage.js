@@ -1,32 +1,74 @@
 import React, { Component } from 'react';
-import { Notification } from 'rxjs/Notification';
-import 'rxjs/add/operator/debounceTime';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 
-import DebounceTimeOperator from '../../utils/DebounceTimeOperator';
-import ObservableChart from '../../components/ObservableChart';
+import StreamChart from '../../components/StreamChart';
+import OperatorCard from './OperatorCard';
+import { STREAM_TYPE_INPUT, STREAM_TYPE_OUTPUT } from './redux';
+
+import './StreamEditPage.css';
 
 class StreamEditPage extends Component {
   render() {
-    const inputMessages = [
-      { frame: 40, notification: Notification.createNext(1) },
-      { frame: 60, notification: Notification.createNext(2) },
-      { frame: 80, notification: Notification.createNext(3) },
-      { frame: 150, notification: Notification.createNext(4) },
-      { frame: 280, notification: Notification.createNext(4) },
-      { frame: 500, notification: Notification.createComplete() },
-    ];
-    const outputMessages = new DebounceTimeOperator(100).simulate(inputMessages);
+    const { operatorsArray, streams, streamsMessages } = this.props;
+    const operatorContainers = operatorsArray.map(renderOperatorContainer);
 
     return (
       <div className="content-wrapper">
         <h1>StreamEditPage</h1>
-        <ObservableChart width="300" height="40" data={inputMessages} />
-        <p className="operator-name">DebounceTime 100</p>
-        <ObservableChart width="300" height="40" data={outputMessages} />
+        <div className="operators">
+          {operatorContainers}
+        </div>
       </div>
     );
+
+    function renderOperatorContainer(operator) {
+      const inputStreams = operator.ioStreams
+        .filter(s => s.type === STREAM_TYPE_INPUT)
+        .map(renderStream);
+      const outputStreams = operator.ioStreams
+        .filter(s => s.type === STREAM_TYPE_OUTPUT)
+        .map(renderStream);
+      return (
+        <div key={operator.id} className="operator-container">
+          <div className="operator__input-streams">
+            {inputStreams}
+          </div>
+          <OperatorCard type={operator.type} />
+          {outputStreams}
+        </div>
+      );
+    }
+
+    function renderStream(streamDesc) {
+      const stream = streams[streamDesc.streamId];
+      const messages = streamsMessages[streamDesc.streamId] || [];
+      return (
+        <StreamChart
+          key={stream.id}
+          messages={messages}
+          label={stream.title}
+        />
+      );
+    }
   }
 }
 
+const propTypes = {
+  operatorsArray: PropTypes.array.isRequired,
+  streams: PropTypes.object.isRequired,
+  streamsMessages: PropTypes.object.isRequired,
+};
+StreamEditPage.propTypes = propTypes;
 
-export default StreamEditPage;
+const mapStateToProps = (state) => {
+  const { operators, streams, streamsMessages } = state.streamEdit;
+  return {
+    operatorsArray: _.values(operators),
+    streams,
+    streamsMessages,
+  };
+};
+
+export default connect(mapStateToProps)(StreamEditPage);
