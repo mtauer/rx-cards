@@ -11,7 +11,7 @@ import './StreamEditPage.css';
 
 class StreamEditPage extends Component {
   render() {
-    const { operatorsArray, streams } = this.props;
+    const { operatorsArray, streams, streamsMessages } = this.props;
     const operatorContainers = operatorsArray.map(renderOperatorContainer);
 
     return (
@@ -41,12 +41,11 @@ class StreamEditPage extends Component {
 
     function renderStream(streamDesc) {
       const stream = streams[streamDesc.streamId];
+      const messages = streamsMessages[streamDesc.streamId] || [];
       return (
         <StreamChart
           key={stream.id}
-          width="300"
-          height="40"
-          messages={[]}
+          messages={messages}
           label={stream.title}
         />
       );
@@ -57,14 +56,16 @@ class StreamEditPage extends Component {
 const propTypes = {
   operatorsArray: PropTypes.array.isRequired,
   streams: PropTypes.object.isRequired,
+  streamsMessages: PropTypes.object.isRequired,
 };
 StreamEditPage.propTypes = propTypes;
 
 const mapStateToProps = (state) => {
-  const { operators, streams } = state.streamEdit;
+  const { operators, streams, streamsMessages } = state.streamEdit;
   return {
     operatorsArray: _.values(operators),
     streams,
+    streamsMessages,
   };
 };
 
