@@ -1,3 +1,4 @@
+import Rx from 'rxjs/Rx';
 import { Notification } from 'rxjs/Notification';
 
 // Initial state
@@ -60,4 +61,13 @@ const initialState = {
 
 export default function streamEditReducer(state = initialState) {
   return state;
+}
+
+// Epics
+
+export function createSimulateMessagesEpic() {
+  return () => {
+    console.log('simulate messages');
+    return Rx.Observable.never();
+  };
 }
