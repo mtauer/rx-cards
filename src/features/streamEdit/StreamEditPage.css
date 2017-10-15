@@ -4,7 +4,7 @@
 .operator-container {
   background-color: #f7f7f7;
   border-right: 1px solid #d9d9d9;
-  padding: 50px 45px;
+  padding: 40px 35px;
 }
 .operator-container:last-child {
   border-right: 0;

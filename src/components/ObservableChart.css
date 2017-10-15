@@ -5,7 +5,8 @@
 .observable-chart__label {
   color: #808080;
   font-weight: 500;
-  font-size: 1.6rem;
+  font-size: 1.3rem;
+  line-height: 1.8rem;
   margin: 0;
   padding: 5px 0;
 }
