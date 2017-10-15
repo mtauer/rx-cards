@@ -28,14 +28,14 @@ class StreamEditPage extends Component {
             <StreamChart
               width="300"
               height="40"
-              data={inputMessages}
+              messages={inputMessages}
               label="Input Stream"
             />
             <OperatorCard title="DebounceTime" />
             <StreamChart
               width="300"
               height="40"
-              data={outputMessages}
+              messages={outputMessages}
               label="Debounced Stream 01"
             />
           </div>
@@ -43,14 +43,14 @@ class StreamEditPage extends Component {
             <StreamChart
               width="300"
               height="40"
-              data={inputMessages}
+              messages={inputMessages}
               label="Input Stream"
             />
             <OperatorCard title="Buffer" />
             <StreamChart
               width="300"
               height="40"
-              data={outputMessages}
+              messages={outputMessages}
               label="Output Stream"
             />
           </div>

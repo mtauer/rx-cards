@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class StreamChartMessages extends PureComponent {
   render() {
-    const { height, data } = this.props;
+    const { height, messages } = this.props;
     const paddingTop = 14;
     const barWidth = 3;
     return (
@@ -14,11 +14,11 @@ class StreamChartMessages extends PureComponent {
 
     function renderMessages() {
       /* eslint-disable react/no-array-index-key */
-      return data.map((d, i) => {
+      return messages.map((d, i) => {
         const xPos = d.frame - (barWidth / 2);
         return (
           <rect
-            key={`data-${i}`}
+            key={`message-${i}`}
             width={barWidth}
             height={height - paddingTop}
             x={xPos}
@@ -34,7 +34,7 @@ class StreamChartMessages extends PureComponent {
 
 const propTypes = {
   height: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
+  messages: PropTypes.array.isRequired,
 };
 StreamChartMessages.propTypes = propTypes;
 

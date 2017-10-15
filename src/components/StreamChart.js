@@ -9,14 +9,14 @@ import './StreamChart.css';
 
 class StreamChart extends PureComponent {
   render() {
-    const { width, height, label, data } = this.props;
+    const { width, height, label, messages } = this.props;
     return (
       <div className="observable-chart-container">
         <h3 className="observable-chart__label">{label}</h3>
         <div className="observable-chart">
           <svg width={width} height={height}>
             <StreamChartGrid width={width} height={height} />
-            <StreamChartMessages width={width} height={height} data={data} />
+            <StreamChartMessages width={width} height={height} messages={messages} />
             <StreamChartTimeMarker width={width} height={height} />
           </svg>
         </div>
@@ -28,7 +28,7 @@ class StreamChart extends PureComponent {
 const propTypes = {
   width: PropTypes.string.isRequired,
   height: PropTypes.string.isRequired,
-  data: PropTypes.array.isRequired,
+  messages: PropTypes.array.isRequired,
   label: PropTypes.string,
 };
 const defaultProps = {
