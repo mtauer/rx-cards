@@ -5,11 +5,11 @@ import './OperationCard.css';
 
 class OperationCard extends Component {
   render() {
-    const { title } = this.props;
+    const { type } = this.props;
     return (
       <div className="operation-card-wrapper">
         <div className="operation-card">
-          <h2 className="operation-card__title">{title}</h2>
+          <h2 className="operation-card__title">{type}</h2>
         </div>
       </div>
     );
@@ -17,7 +17,7 @@ class OperationCard extends Component {
 }
 
 const propTypes = {
-  title: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
 };
 OperationCard.propTypes = propTypes;
 

@@ -1,3 +1,5 @@
+import 'rxjs/add/operator/debounceTime';
+
 import SimulationScheduler from './SimulationScheduler';
 
 class DebounceTimeOperator {
