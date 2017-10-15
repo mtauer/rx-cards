@@ -9,3 +9,7 @@
 .operator-container:last-child {
   border-right: 0;
 }
+
+.operator__input-streams {
+  min-height: 182px;
+}

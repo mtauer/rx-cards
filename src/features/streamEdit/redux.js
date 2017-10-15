@@ -3,6 +3,8 @@ import { Notification } from 'rxjs/Notification';
 import { createSelector } from 'reselect';
 import _ from 'lodash';
 
+import Operator from '../../utils/Operator';
+
 // Initial state
 
 export const STREAM_TYPE_INPUT = 'input';
@@ -22,6 +24,10 @@ const initialState = {
       id: 'buffer-1_output-1',
       title: 'Buffered Stream 1',
     },
+    'map-1_output-1': {
+      id: 'map-1_output-1',
+      title: 'Mapped Stream 1',
+    },
   },
   definedStreamsMessages: {
     input: [
@@ -35,6 +41,17 @@ const initialState = {
   },
   streamsMessages: {},
   operators: {
+    'debounceTime-1': {
+      id: 'debounceTime-1',
+      type: 'debounceTime',
+      options: {
+        dueTime: 50,
+      },
+      ioStreams: [
+        { streamId: 'input', type: STREAM_TYPE_INPUT },
+        { streamId: 'debounceTime-1_output-1', type: STREAM_TYPE_OUTPUT },
+      ],
+    },
     'buffer-1': {
       id: 'buffer-1',
       type: 'buffer',
@@ -45,15 +62,15 @@ const initialState = {
         { streamId: 'buffer-1_output-1', type: STREAM_TYPE_OUTPUT },
       ],
     },
-    'debounceTime-1': {
-      id: 'debounceTime-1',
-      type: 'debounceTime',
+    'map-1': {
+      id: 'map-1',
+      type: 'map',
       options: {
-        dueTime: 100,
+        project: a => a.length,
       },
       ioStreams: [
-        { streamId: 'input', type: STREAM_TYPE_INPUT },
-        { streamId: 'debounceTime-1_output-1', type: STREAM_TYPE_OUTPUT },
+        { streamId: 'buffer-1_output-1', type: STREAM_TYPE_INPUT },
+        { streamId: 'map-1_output-1', type: STREAM_TYPE_OUTPUT },
       ],
     },
   },
@@ -103,10 +120,26 @@ const getOperatorsArray = state => _.values(state.streamEdit.operators);
 export const getStreamsMessages = createSelector(
   [getDefinedStreamsMessages, getOperatorsArray],
   (definedStreamsMessages, operatorsArray) => {
-    console.log('getStreamsMessages', definedStreamsMessages, operatorsArray);
     const streamsMessages = {
       ...definedStreamsMessages,
     };
+    operatorsArray.forEach((operator) => {
+      // 1. check if output messages were already calculated -> if yes return
+      // 2. check if input messages were defined -> if no calculate them recursively
+      const inputMessages = operator.ioStreams
+        .filter(s => s.type === STREAM_TYPE_INPUT)
+        .map(s => streamsMessages[s.streamId]);
+      if (_.every(inputMessages)) {
+        const outputMessages = new Operator(operator.type, operator.options)
+          .simulate(inputMessages);
+        console.log('outputMessages', outputMessages);
+        const outputStreams = operator.ioStreams
+          .filter(s => s.type === STREAM_TYPE_OUTPUT);
+        outputStreams.forEach((s, i) => {
+          streamsMessages[s.streamId] = outputMessages[i];
+        });
+      }
+    });
     return streamsMessages;
   },
 );

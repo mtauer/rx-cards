@@ -32,7 +32,9 @@ class StreamEditPage extends Component {
         .map(renderStream);
       return (
         <div key={operator.id} className="operator-container">
-          {inputStreams}
+          <div className="operator__input-streams">
+            {inputStreams}
+          </div>
           <OperatorCard type={operator.type} />
           {outputStreams}
         </div>
