@@ -35,21 +35,21 @@ const initialState = {
       { frame: 60, notification: Notification.createNext(2) },
       { frame: 80, notification: Notification.createNext(3) },
       { frame: 150, notification: Notification.createNext(4) },
-      { frame: 280, notification: Notification.createNext(4) },
+      { frame: 280, notification: Notification.createNext(5) },
       { frame: 500, notification: Notification.createComplete() },
     ],
   },
   streamsMessages: {},
   operators: {
-    'debounceTime-1': {
-      id: 'debounceTime-1',
-      type: 'debounceTime',
+    'map-1': {
+      id: 'map-1',
+      type: 'map',
       options: {
-        dueTime: 50,
+        project: a => a.length,
       },
       ioStreams: [
-        { streamId: 'input', type: STREAM_TYPE_INPUT },
-        { streamId: 'debounceTime-1_output-1', type: STREAM_TYPE_OUTPUT },
+        { streamId: 'buffer-1_output-1', type: STREAM_TYPE_INPUT },
+        { streamId: 'map-1_output-1', type: STREAM_TYPE_OUTPUT },
       ],
     },
     'buffer-1': {
@@ -62,15 +62,15 @@ const initialState = {
         { streamId: 'buffer-1_output-1', type: STREAM_TYPE_OUTPUT },
       ],
     },
-    'map-1': {
-      id: 'map-1',
-      type: 'map',
+    'debounceTime-1': {
+      id: 'debounceTime-1',
+      type: 'debounceTime',
       options: {
-        project: a => a.length,
+        dueTime: 50,
       },
       ioStreams: [
-        { streamId: 'buffer-1_output-1', type: STREAM_TYPE_INPUT },
-        { streamId: 'map-1_output-1', type: STREAM_TYPE_OUTPUT },
+        { streamId: 'input', type: STREAM_TYPE_INPUT },
+        { streamId: 'debounceTime-1_output-1', type: STREAM_TYPE_OUTPUT },
       ],
     },
   },
@@ -115,31 +115,62 @@ export function createSimulateMessagesEpic() {
 // Selectors
 
 const getDefinedStreamsMessages = state => state.streamEdit.definedStreamsMessages;
-const getOperatorsArray = state => _.values(state.streamEdit.operators);
+const getOperators = state => state.streamEdit.operators;
 
 export const getStreamsMessages = createSelector(
-  [getDefinedStreamsMessages, getOperatorsArray],
-  (definedStreamsMessages, operatorsArray) => {
+  [getDefinedStreamsMessages, getOperators],
+  (definedStreamsMessages, operators) => {
     const streamsMessages = {
       ...definedStreamsMessages,
     };
-    operatorsArray.forEach((operator) => {
-      // 1. check if output messages were already calculated -> if yes return
-      // 2. check if input messages were defined -> if no calculate them recursively
-      const inputMessages = operator.ioStreams
-        .filter(s => s.type === STREAM_TYPE_INPUT)
+    const operatorsArray = _.values(operators);
+    operatorsArray.forEach(simulateOperator);
+    return streamsMessages;
+
+    function simulateOperator(operator) {
+      const outputStreams = operator.ioStreams
+        .filter(s => s.type === STREAM_TYPE_OUTPUT);
+
+      // Return immediately if all output streams messages were already computed
+      const outputMessages = outputStreams
         .map(s => streamsMessages[s.streamId]);
+      if (_.every(outputMessages)) {
+        return;
+      }
+
+      // Recursively compute all input streams messages
+      const inputStreams = operator.ioStreams
+        .filter(s => s.type === STREAM_TYPE_INPUT);
+      const inputMessages = inputStreams
+        .map((s) => {
+          let messages = streamsMessages[s.streamId];
+          if (!messages) {
+            computeMessages(s.streamId);
+            messages = streamsMessages[s.streamId];
+          }
+          return messages;
+        });
+
+      // Simulate operator if all messages for all input streams could be
+      // calculated
       if (_.every(inputMessages)) {
-        const outputMessages = new Operator(operator.type, operator.options)
+        const computedOutputMessages = new Operator(operator.type, operator.options)
           .simulate(inputMessages);
-        console.log('outputMessages', outputMessages);
-        const outputStreams = operator.ioStreams
-          .filter(s => s.type === STREAM_TYPE_OUTPUT);
         outputStreams.forEach((s, i) => {
-          streamsMessages[s.streamId] = outputMessages[i];
+          streamsMessages[s.streamId] = computedOutputMessages[i];
         });
       }
-    });
-    return streamsMessages;
+    }
+
+    function computeMessages(streamId) {
+      // Every stream id follows the template
+      // <operator id>_<stream type>-<stream index within type>. An example
+      // would be `debounceTime-1_output-1`.
+      const operatorId = streamId.split('_')[0];
+      const operator = operators[operatorId];
+      if (operator) {
+        simulateOperator(operator);
+      }
+    }
   },
 );
