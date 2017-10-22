@@ -27,6 +27,11 @@ class OperationCard extends Component {
           />
         );
       }
+      case 'map': {
+        return (
+          <p>{'array => array.length'}</p>
+        );
+      }
       default: {
         return null;
       }
