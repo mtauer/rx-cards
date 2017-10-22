@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import _ from 'lodash';
 
 import StreamChart from '../../components/StreamChart';
 import OperatorCard from './OperatorCard';
@@ -67,9 +66,9 @@ const propTypes = {
 StreamEditPage.propTypes = propTypes;
 
 const mapStateToProps = (state) => {
-  const { operators, streams, streamsMessages } = state.streamEdit;
+  const { operators, operatorsOrder, streams, streamsMessages } = state.streamEdit;
   return {
-    operatorsArray: _.values(operators),
+    operatorsArray: operatorsOrder.map(id => operators[id]),
     streams,
     streamsMessages,
   };

@@ -74,6 +74,7 @@ const initialState = {
       ],
     },
   },
+  operatorsOrder: ['map-1', 'buffer-1', 'debounceTime-1'],
 };
 
 // Action Types
@@ -132,14 +133,15 @@ export function createSimulateMessagesEpic() {
 
 const getDefinedStreamsMessages = state => state.streamEdit.definedStreamsMessages;
 const getOperators = state => state.streamEdit.operators;
+const getOperatorsOrder = state => state.streamEdit.operatorsOrder;
 
 export const getStreamsMessages = createSelector(
-  [getDefinedStreamsMessages, getOperators],
-  (definedStreamsMessages, operators) => {
+  [getDefinedStreamsMessages, getOperators, getOperatorsOrder],
+  (definedStreamsMessages, operators, operatorsOrder) => {
     const streamsMessages = {
       ...definedStreamsMessages,
     };
-    const operatorsArray = _.values(operators);
+    const operatorsArray = operatorsOrder.map(id => operators[id]);
     operatorsArray.forEach(simulateOperator);
     return streamsMessages;
 
