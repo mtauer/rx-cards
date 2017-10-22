@@ -22,8 +22,8 @@ class OperationCard extends Component {
         return (
           <input
             value={operator.options.dueTime}
-            onChange={e => onOptionsChange({ dueTime: Number(e.target.value) })}
-            onKeyDown={onKeyDownHandlerForNumber('dueTime')}
+            onChange={onChangeForNumber('dueTime', validatePositiveNumber)}
+            onKeyDown={onKeyDownForNumber('dueTime', validatePositiveNumber)}
           />
         );
       }
@@ -37,13 +37,23 @@ class OperationCard extends Component {
       }
     }
 
-    function onKeyDownHandlerForNumber(optionsKey) {
+    function onChangeForNumber(optionKey, validateFunc) {
+      return (e) => {
+        onOptionsChange({ [optionKey]: validateFunc(Number(e.target.value)) });
+      };
+    }
+
+    function onKeyDownForNumber(optionKey, valideFunc) {
       return (e) => {
         let delta = 0;
-        if (e.keyCode === 38) { delta = 1; }
-        if (e.keyCode === 40) { delta = -1; }
-        onOptionsChange({ [optionsKey]: Number(e.target.value) + delta });
+        if (e.keyCode === 38) { delta = e.shiftKey ? 10 : 1; }
+        if (e.keyCode === 40) { delta = e.shiftKey ? -10 : -1; }
+        onOptionsChange({ [optionKey]: valideFunc(Number(e.target.value) + delta) });
       };
+    }
+
+    function validatePositiveNumber(value) {
+      return Math.max(value, 0);
     }
   }
 }
