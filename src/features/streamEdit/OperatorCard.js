@@ -23,12 +23,22 @@ class OperationCard extends Component {
           <input
             value={operator.options.dueTime}
             onChange={e => onOptionsChange({ dueTime: Number(e.target.value) })}
+            onKeyDown={onKeyDownHandlerForNumber('dueTime')}
           />
         );
       }
       default: {
         return null;
       }
+    }
+
+    function onKeyDownHandlerForNumber(optionsKey) {
+      return (e) => {
+        let delta = 0;
+        if (e.keyCode === 38) { delta = 1; }
+        if (e.keyCode === 40) { delta = -1; }
+        onOptionsChange({ [optionsKey]: Number(e.target.value) + delta });
+      };
     }
   }
 }
