@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 import StreamChart from '../../components/StreamChart';
 import OperatorCard from './OperatorCard';
-import { STREAM_TYPE_INPUT, STREAM_TYPE_OUTPUT } from './redux';
+import { STREAM_TYPE_INPUT, STREAM_TYPE_OUTPUT, setOperatorOptions } from './redux';
 
 import './StreamEditPage.css';
 
@@ -74,9 +74,9 @@ const mapStateToProps = (state) => {
     streamsMessages,
   };
 };
-const mapDispatchToProps = () => ({
+const mapDispatchToProps = dispatch => ({
   onOperatorOptionsChange: (operator, options) => {
-    console.log('onOperatorOptionsChange', operator, options);
+    dispatch(setOperatorOptions(operator.id, options));
   },
 });
 

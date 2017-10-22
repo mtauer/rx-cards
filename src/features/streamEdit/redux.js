@@ -80,11 +80,16 @@ const initialState = {
 
 const PREFIX = 'streamEdit/';
 export const SET_STREAMS_MESSAGES_ACTION = `${PREFIX}SET_STREAMS_MESSAGES_ACTION`;
+export const SET_OPERATOR_OPTIONS = `${PREFIX}SET_OPERATOR_OPTIONS`;
 
 // Action Creators
 
 export function setStreamsMessagesAction(streamsMessages) {
   return { type: SET_STREAMS_MESSAGES_ACTION, streamsMessages };
+}
+
+export function setOperatorOptions(operatorId, options) {
+  return { type: SET_OPERATOR_OPTIONS, operatorId, options };
 }
 
 // Reducer
@@ -96,6 +101,17 @@ export default function streamEditReducer(state = initialState, action) {
         ...state,
         streamsMessages: action.streamsMessages,
       };
+    case SET_OPERATOR_OPTIONS: {
+      const newOperators = _.defaultsDeep({
+        [action.operatorId]: {
+          options: action.options,
+        },
+      }, { ...state.operators });
+      return {
+        ...state,
+        operators: newOperators,
+      };
+    }
     default:
       return state;
   }
