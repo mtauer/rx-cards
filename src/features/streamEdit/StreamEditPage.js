@@ -11,7 +11,7 @@ import './StreamEditPage.css';
 
 class StreamEditPage extends Component {
   render() {
-    const { operatorsArray, streams, streamsMessages } = this.props;
+    const { operatorsArray, streams, streamsMessages, onOperatorOptionsChange } = this.props;
     const operatorContainers = operatorsArray.map(renderOperatorContainer);
 
     return (
@@ -35,7 +35,10 @@ class StreamEditPage extends Component {
           <div className="operator__input-streams">
             {inputStreams}
           </div>
-          <OperatorCard type={operator.type} />
+          <OperatorCard
+            operator={operator}
+            onOptionsChange={options => onOperatorOptionsChange(operator, options)}
+          />
           {outputStreams}
         </div>
       );
@@ -59,6 +62,7 @@ const propTypes = {
   operatorsArray: PropTypes.array.isRequired,
   streams: PropTypes.object.isRequired,
   streamsMessages: PropTypes.object.isRequired,
+  onOperatorOptionsChange: PropTypes.func.isRequired,
 };
 StreamEditPage.propTypes = propTypes;
 
@@ -70,5 +74,10 @@ const mapStateToProps = (state) => {
     streamsMessages,
   };
 };
+const mapDispatchToProps = () => ({
+  onOperatorOptionsChange: (operator, options) => {
+    console.log('onOperatorOptionsChange', operator, options);
+  },
+});
 
-export default connect(mapStateToProps)(StreamEditPage);
+export default connect(mapStateToProps, mapDispatchToProps)(StreamEditPage);
