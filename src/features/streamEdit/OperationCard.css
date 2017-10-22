@@ -7,7 +7,7 @@
   border-radius: 10px;
   box-shadow: 0 2px 8px 0 rgba(0,0,0,0.06), 0 1px 2px 0 rgba(0,0,0,0.08);
   min-height: 160px;
-  padding: 20px;
+  padding: 20px 10px;
 }
 
 .operation-card__title {
@@ -16,4 +16,45 @@
   font-weight: 400;
   margin: 0;
   text-align: center;
+}
+
+.number-input-container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 4px 0;
+}
+
+.number-input {
+  background-color: #eaeff5;
+  border: 2px solid #eaeff5;
+  border-radius: 3px;
+  color: #333333;
+  font-size: 1.6rem;
+  line-height: 1.8rem;
+  outline: 0;
+  padding: 10px;
+  width: 100px;
+}
+
+.number-input:focus {
+  border: 2px solid #4a90e2;
+  /*color: #4a90e2;*/
+}
+
+.number-input-unit {
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+  padding: 0 10px;
+}
+
+.function-input {
+  background-color: #eaeff5;
+  flex: 1;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 1.2rem;
+  line-height: 1.4rem;
+  min-height: 50px;
+  opacity: 0.5;
+  padding: 5px 10px;
 }
