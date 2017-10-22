@@ -15,7 +15,12 @@ class StreamEditPage extends Component {
 
     return (
       <div className="content-wrapper">
-        <h1>StreamEditPage</h1>
+        <div className="page-header">
+          <h1 className="page-header__title">Detect multiple clicks</h1>
+          <p className="page-header__description">The input stream is a stream
+            of mouse click events. Change the due time ofthe debounceTime
+            operator to configure the click speed.</p>
+        </div>
         <div className="operators">
           {operatorContainers}
         </div>

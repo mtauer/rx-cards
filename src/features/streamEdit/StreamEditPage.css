@@ -13,3 +13,24 @@
 .operator__input-streams {
   min-height: 182px;
 }
+
+.page-header {
+  padding: 30px 0;
+}
+
+.page-header__title {
+  font-size: 4.8rem;
+  font-weight: 400;
+  line-height: 5.6rem;
+  margin: 0;
+  padding: 2px 0;
+}
+
+.page-header__description {
+  color: #808080;
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.8rem;
+  margin: 0;
+  padding: 2px 0;
+}
