@@ -74,7 +74,7 @@ const initialState = {
       ],
     },
   },
-  operatorsOrder: ['map-1', 'buffer-1', 'debounceTime-1'],
+  operatorsOrder: ['debounceTime-1', 'buffer-1', 'map-1'],
 };
 
 // Action Types
