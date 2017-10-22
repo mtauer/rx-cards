@@ -20,16 +20,22 @@ class OperationCard extends Component {
     switch (operator.type) {
       case 'debounceTime': {
         return (
-          <input
-            value={operator.options.dueTime}
-            onChange={onChangeForNumber('dueTime', validatePositiveNumber)}
-            onKeyDown={onKeyDownForNumber('dueTime', validatePositiveNumber)}
-          />
+          <div className="number-input-container">
+            <input
+              className="number-input"
+              value={operator.options.dueTime}
+              onChange={onChangeForNumber('dueTime', validatePositiveNumber)}
+              onKeyDown={onKeyDownForNumber('dueTime', validatePositiveNumber)}
+            />
+            <p className="number-input-unit">ms</p>
+          </div>
         );
       }
       case 'map': {
         return (
-          <p>{'array => array.length'}</p>
+          <div className="number-input-container">
+            <p className="function-input">{'array => array.length'}</p>
+          </div>
         );
       }
       default: {
