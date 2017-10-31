@@ -54,8 +54,8 @@ class StreamEditPage extends Component {
       return (
         <StreamChart
           key={stream.id}
+          title={stream.title}
           messages={messages}
-          label={stream.title}
         />
       );
     }
