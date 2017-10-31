@@ -12,9 +12,7 @@ body {
 }
 
 .content-wrapper {
-  margin: 0 60px;
-}
-
-.operator-name {
-  text-align: center;
+  margin: 0 auto;
+  max-width: 1024px;
+  padding: 0 32px;
 }

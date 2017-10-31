@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
+import * as colors from './colors';
+
 class StreamChartGrid extends PureComponent {
   render() {
     const { width, height, legendHeight } = this.props;
@@ -19,7 +21,7 @@ class StreamChartGrid extends PureComponent {
           height={height - legendHeight}
           x={0}
           y={legendHeight}
-          fill="#ffffff"
+          fill={colors.colorGrey17}
         />
       );
     }
@@ -36,7 +38,7 @@ class StreamChartGrid extends PureComponent {
             height={height}
             x={xPos}
             y={0}
-            fill="#d9d9d9"
+            fill={colors.colorGrey12}
           />,
           <text
             key={`text-${time}`}
@@ -44,7 +46,7 @@ class StreamChartGrid extends PureComponent {
             y={10}
             textAnchor="end"
             fontSize={11}
-            fill="#404040"
+            fill={colors.colorGrey49}
           >{text}</text>,
         ];
       });

@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import * as colors from './colors';
+
 class StreamChartMessages extends PureComponent {
   render() {
     const { height, messages, legendHeight } = this.props;
@@ -22,7 +24,7 @@ class StreamChartMessages extends PureComponent {
             height={height - legendHeight}
             x={xPos}
             y={legendHeight}
-            fill="#4a90e2"
+            fill={colors.colorBlue}
           />
         );
       });

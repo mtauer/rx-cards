@@ -1,33 +1,34 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 
 import StreamChart from '../../components/StreamChart';
 import OperatorCard from './OperatorCard';
 import { STREAM_TYPE_INPUT, STREAM_TYPE_OUTPUT, setOperatorOptions } from './redux';
 
-import './StreamEditPage.css';
-
 class StreamEditPage extends Component {
   render() {
     const { operatorsArray, streams, streamsMessages, onOperatorOptionsChange } = this.props;
-    const operatorContainers = operatorsArray.map(renderOperatorContainer);
 
     return (
       <div className="content-wrapper">
-        <div className="page-header">
-          <h1 className="page-header__title">Detect multiple clicks</h1>
-          <p className="page-header__description">The input stream is a stream
-            of mouse click events. Change the due time of the debounceTime
-            operator to configure the click speed.</p>
-        </div>
-        <div className="operators">
-          {operatorContainers}
-        </div>
+        <PageHeaderContainer>
+          <PageHeaderTitle>
+            Detect multiple clicks
+          </PageHeaderTitle>
+          <PageHeaderDescription>
+            The input stream is a stream of mouse click events. Change the due
+            time of the debounceTime operator to configure the click speed.
+          </PageHeaderDescription>
+        </PageHeaderContainer>
+        <OperatorsWrapper>
+          {operatorsArray.map(renderOperatorContainer)}
+        </OperatorsWrapper>
       </div>
     );
 
-    function renderOperatorContainer(operator) {
+    function renderOperatorContainer(operator, index) {
       const inputStreams = operator.ioStreams
         .filter(s => s.type === STREAM_TYPE_INPUT)
         .map(renderStream);
@@ -35,16 +36,19 @@ class StreamEditPage extends Component {
         .filter(s => s.type === STREAM_TYPE_OUTPUT)
         .map(renderStream);
       return (
-        <div key={operator.id} className="operator-container">
-          <div className="operator__input-streams">
+        <OperatorContainer key={operator.id}>
+          <OperatorIndex>
+            {index + 1}
+          </OperatorIndex>
+          <OperatorInputStreamsWrapper>
             {inputStreams}
-          </div>
+          </OperatorInputStreamsWrapper>
           <OperatorCard
             operator={operator}
             onOptionsChange={options => onOperatorOptionsChange(operator, options)}
           />
           {outputStreams}
-        </div>
+        </OperatorContainer>
       );
     }
 
@@ -54,8 +58,8 @@ class StreamEditPage extends Component {
       return (
         <StreamChart
           key={stream.id}
+          title={stream.title}
           messages={messages}
-          label={stream.title}
         />
       );
     }
@@ -69,6 +73,52 @@ const propTypes = {
   onOperatorOptionsChange: PropTypes.func.isRequired,
 };
 StreamEditPage.propTypes = propTypes;
+
+const PageHeaderContainer = styled.div`
+  padding: 30px 0;
+`;
+const PageHeaderTitle = styled.h1`
+  font-size: 4.8rem;
+  font-weight: 400;
+  line-height: 5.6rem;
+  margin: 0;
+  padding: 2px 0;
+`;
+const PageHeaderDescription = styled.p`
+  color: #808080;
+  font-size: 1.6rem;
+  font-weight: 400;
+  line-height: 1.8rem;
+  margin: 0;
+  padding: 2px 0;
+`;
+
+const OperatorsWrapper = styled.div`
+  display: flex;
+  left: 0;
+  overflow-y: auto;
+  position: absolute;
+  right: 0;
+`;
+const OperatorContainer = styled.div`
+  background-color: #282c34;
+  border-right: 1px solid #181a1f;
+  padding: 0 0 40px 0;
+
+  &:last-child {
+    border-right: 0;
+  }
+`;
+const OperatorIndex = styled.p`
+  color: #4b5365;
+  font-size: 1.6rem;
+  line-height: 1.8rem;
+  margin: 0;
+  padding: 16px 60px 14px 60px;
+`;
+const OperatorInputStreamsWrapper = styled.div`
+  min-height: 218px;
+`;
 
 const mapStateToProps = (state) => {
   const { operators, operatorsOrder, streams, streamsMessages } = state.streamEdit;
