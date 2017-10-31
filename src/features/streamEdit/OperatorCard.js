@@ -91,8 +91,7 @@ const OperatorContainer = styled.div`
 const OperatorTitle = styled.h3`
   color: #8f96a6;
   font-size: 2.6rem;
-  font-weight: 300;
-  letter-spacing: 0.2px;
+  font-weight: 400;
   line-height: 2.9rem;
   margin: 0;
   padding: 2px 0;
@@ -105,7 +104,7 @@ const OperatorInputLabel = styled.p`
   font-size: 1.4rem;
   line-height: 1.6rem;
   margin: 0;
-  padding: 8px 0;
+  padding: 7px 0;
 `;
 const OperatorInputNumber = styled.input`
   background-color: #353b45;
