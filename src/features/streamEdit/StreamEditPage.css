@@ -1,5 +1,9 @@
 .operators {
   display: flex;
+  left: 0;
+  overflow-y: auto;
+  position: absolute;
+  right: 0;
 }
 .operator-container {
   background-color: #282c34;
