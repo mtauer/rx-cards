@@ -7,9 +7,9 @@ import StreamChartTimeMarker from './StreamChartTimeMarker';
 
 import './StreamChart.css';
 
-const CHART_WIDTH = 300;
-const CHART_HEIGHT = 40;
-const CHART_LEGEND_HEIGHT = 14;
+const chartWidth = 300;
+const chartHeight = 40;
+const chartLegendHeight = 14;
 
 class StreamChart extends PureComponent {
   render() {
@@ -18,22 +18,22 @@ class StreamChart extends PureComponent {
       <div className="observable-chart-container">
         <h3 className="observable-chart__label">{label}</h3>
         <div className="observable-chart">
-          <svg width={CHART_WIDTH} height={CHART_HEIGHT}>
+          <svg width={chartWidth} height={chartHeight}>
             <StreamChartGrid
-              width={CHART_WIDTH}
-              height={CHART_HEIGHT}
-              legendHeight={CHART_LEGEND_HEIGHT}
+              width={chartWidth}
+              height={chartHeight}
+              legendHeight={chartLegendHeight}
             />
             <StreamChartMessages
-              width={CHART_WIDTH}
-              height={CHART_HEIGHT}
-              legendHeight={CHART_LEGEND_HEIGHT}
+              width={chartWidth}
+              height={chartHeight}
+              legendHeight={chartLegendHeight}
               messages={messages}
             />
             <StreamChartTimeMarker
-              width={CHART_WIDTH}
-              height={CHART_HEIGHT}
-              legendHeight={CHART_LEGEND_HEIGHT}
+              width={chartWidth}
+              height={chartHeight}
+              legendHeight={chartLegendHeight}
             />
           </svg>
         </div>
